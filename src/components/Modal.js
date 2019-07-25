@@ -1,51 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
 import { Modal, Button, Form, InputGroup } from "react-bootstrap";
 
-class CustomModal extends Component {
-  constructor() {
-    super();
-    this.state = { user: { name: undefined } };
-  }
+const customModal = ({ state, handleSave, handleClose, updateName }) => (
+  <Modal show={state.show} onHide={handleClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>{state.title}</Modal.Title>
+    </Modal.Header>
 
-  updateName = (user, event) => {
-    const updatedUser = { ...user, name: event.target.value };
-    this.setState(prevState => ({ ...prevState, user: updatedUser }));
-  };
+    <Modal.Body>
+      <InputGroup>
+        <Form.Control
+          type="text"
+          name="name"
+          placeholder="Enter Name"
+          value={state.user.name}
+          onChange={event => updateName(state.user, event)}
+        />
+      </InputGroup>
+    </Modal.Body>
 
-  render() {
-    const { title, show, user } = this.props;
-    return (
-      <Modal show={show} onHide={this.props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+    <Modal.Footer>
+      <Button variant="secondary" onClick={handleClose}>
+        Close
+      </Button>
+      <Button variant="primary" onClick={() => handleSave(state.user)}>
+        Save changes
+      </Button>
+    </Modal.Footer>
+  </Modal>
+);
 
-        <Modal.Body>
-          <InputGroup>
-            <Form.Control
-              type="text"
-              name="name"
-              placeholder="Enter Name"
-              value={this.state.user.id? this.state.user.name : user.name}
-              onChange={event => this.updateName(user, event)}
-            />
-          </InputGroup>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.props.handleClose}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => this.props.handleSave(this.state.user)}
-          >
-            Save changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-}
-
-export default CustomModal;
+export default customModal;

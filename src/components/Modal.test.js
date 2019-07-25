@@ -4,19 +4,17 @@ import CustomModal from "./Modal";
 
 describe("CustomModal", () => {
   const defaultProps = {
-    title: "",
-    show: false,
-    user: {}
+    state: { title: "", show: false, user: {} }
   };
 
   const mockSave = jest.fn();
-  const mockClose =  jest.fn();
+  const mockClose = jest.fn();
+  const mockUpdateName = jest.fn();
   const props = {
-    title: "test title",
-    show: true,
-    user: { id: 1, name: "test" },
+    state: { title: "test title", show: true, user: { id: 1, name: "test" } },
     handleSave: mockSave,
-    handleClose: mockClose
+    handleClose: mockClose,
+    updateName: mockUpdateName
   };
 
   it("when render with default props", () => {
@@ -32,17 +30,21 @@ describe("CustomModal", () => {
     it("when component renders", () => {
       // console.log(wrapper.debug());
       expect(wrapper.find("Bootstrap(Modal)").props().show).toBe(true);
-      expect(wrapper.find("div.modal-title.h4").text()).toEqual(props.title);
+      expect(wrapper.find("div.modal-title.h4").text()).toEqual(
+        props.state.title
+      );
     });
 
-    it('when name change event trigger', () => {
-        wrapper.find('input[name="name"]').simulate('change', {target: { value: 'modified value'}});
-        expect(wrapper.state().user.name).toEqual('modified value');
-    })
+    it("when name change event trigger", () => {
+      wrapper
+        .find('input[name="name"]')
+        .simulate("change", { target: { value: "modified value" } });
+      expect(mockUpdateName).toBeCalled();
+    });
 
-    it('when save action trigger', () => {
-        wrapper.find('Button[variant="primary"]').simulate('click');
-        expect(mockSave).toBeCalledWith({id: 1, name: 'modified value'});
-    })
+    it("when save action trigger", () => {
+      wrapper.find('Button[variant="primary"]').simulate("click");
+      expect(mockSave).toBeCalledWith({ id: 1, name: "test" });
+    });
   });
 });
