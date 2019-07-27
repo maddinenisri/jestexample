@@ -23,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:e2e": "codeceptjs run --steps --verbose --config=./e2eTests/docker.conf.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,6 +46,8 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "react-addons-test-utils": "^15.6.2",
-    "redux-mock-store": "^1.5.3"
+    "redux-mock-store": "^1.5.3",
+    "codeceptjs": "^2.2.0",
+    "webdriverio": "^5.11.10"
   }
 }

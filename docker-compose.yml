@@ -1,0 +1,25 @@
+version: "2"
+services:
+  react-app:
+    container_name: react-app
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - react-firefox-container
+    volumes:
+      - ./e2eTests:/e2eTests
+      - ./package.json:/package.json
+      - ./package-lock.json:/package-lock.json
+      - ./.gitignore:/.gitignore
+      - ./src:/src
+      - ./public:/public
+      - ./scripts:/scripts
+
+  react-firefox-container:
+    container_name: react-firefox-container
+    image: selenium/standalone-firefox:3.141.59-selenium
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
