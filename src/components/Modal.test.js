@@ -4,14 +4,16 @@ import CustomModal from "./Modal";
 
 describe("CustomModal", () => {
   const defaultProps = {
-    state: { title: "", show: false, user: {} }
+    title: "", show: false, user: {name: ''}
   };
 
   const mockSave = jest.fn();
   const mockClose = jest.fn();
   const mockUpdateName = jest.fn();
   const props = {
-    state: { title: "test title", show: true, user: { id: 1, name: "test" } },
+    title: "test title", 
+    show: true, 
+    user: { id: 1, name: "test" },
     handleSave: mockSave,
     handleClose: mockClose,
     updateName: mockUpdateName
@@ -31,7 +33,7 @@ describe("CustomModal", () => {
       // console.log(wrapper.debug());
       expect(wrapper.find("Bootstrap(Modal)").props().show).toBe(true);
       expect(wrapper.find("div.modal-title.h4").text()).toEqual(
-        props.state.title
+        props.title
       );
     });
 
