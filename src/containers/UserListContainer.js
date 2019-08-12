@@ -1,84 +1,61 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import UserList from "../components/UserList";
-import { editUser, addUser, deleteUser } from "../actions";
+import * as actions from "../actions";
 import CustomModal from "../components/Modal";
 import { max_number } from "../helpers";
 
-export class UserContainer extends Component {
-  state = {
-    show: false,
-    user: {},
-    title: ''
+const UserContainer = () => {
+  const [show, setShow] = useState(false);
+  const [user, setUser] = useState({});
+  const [title, setTitle] = useState("");
+  const state = useSelector(state => state.userReducer);
+  const users = useSelector(state => state.userReducer.users);
+
+  const dispatch = useDispatch();
+
+  const showModal = (title, user) => {
+    setShow(true);
+    setUser(user);
+    setTitle(title);
   };
 
-  showModal = (title, user) => {
-    this.setState(prevState => ({
-      ...prevState,
-      title,
-      user,
-      show: true
-    }));
-  }
-
-  updateName = (user, event) => {
+  const updateName = (user, event) => {
     const updatedUser = { ...user, name: event.target.value };
-    this.setState(prevState => ({ ...prevState, user: updatedUser }));
-  };
-  
-  hideModal = e => this.setState({ show: false });
-
-  updateUser = user => {
-    this.props.saveUser(user);
-    this.setState({ show: false });
+    setUser(updatedUser);
   };
 
-  addUser = user => {
-    const ids = this.props.users.map(user => user.id);
-    this.props.addUser({ id: max_number(ids) + 1, name: user.name });
-    this.setState({ show: false });
+  const hideModal = e => setShow(false);
+
+  const updateUser = user => {
+    dispatch(actions.editUser(user));
+    setShow(false);
   };
 
-  deleteUser = user => {
-    this.props.deleteUser(user);
+  const addUser = user => {
+    const ids = users.map(user => user.id);
+    dispatch(actions.addUser({ id: max_number(ids) + 1, name: user.name }));
+    setShow(false);
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        <UserList
-          showModal={this.showModal}
-          deleteUser={this.deleteUser}
-          users={this.props.users}
-        />
-        <CustomModal
-          state={this.state}
-          handleSave={
-            this.state.title === "Add User" ? this.addUser : this.updateUser
-          }
-          handleClose={this.hideModal}
-          updateName={this.updateName}
-        />
-      </React.Fragment>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    users: state.userReducer.users
+  const deleteUser = user => {
+    dispatch(actions.deleteUser(user));
   };
+
+  console.log(state);
+  return (
+    <>
+      <UserList showModal={showModal} deleteUser={deleteUser} users={users} />
+      <CustomModal
+        title={title}
+        show={show}
+        user={user}
+        handleSave={title === "Add User" ? addUser : updateUser}
+        handleClose={hideModal}
+        updateName={updateName}
+      />
+    </>
+  );
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    saveUser: user => dispatch(editUser(user)),
-    addUser: user => dispatch(addUser(user)),
-    deleteUser: user => dispatch(deleteUser(user))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserContainer);
+export default UserContainer;

@@ -16,8 +16,10 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.0.5",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "typescript": "^3.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,11 +45,11 @@
   },
   "devDependencies": {
     "babel-preset-react-app": "^9.0.0",
+    "codeceptjs": "^2.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "react-addons-test-utils": "^15.6.2",
     "redux-mock-store": "^1.5.3",
-    "codeceptjs": "^2.2.0",
     "webdriverio": "^5.11.10"
   }
 }

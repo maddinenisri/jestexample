@@ -1,7 +1,7 @@
 Feature('Acceptance Test');
 
 Before((I) => {
-  I.amOnPage('http://react-app:3000');
+  I.amOnPage('/');
 });
 
 Scenario('users are displayed', I => {
@@ -11,7 +11,7 @@ Scenario('users are displayed', I => {
 });
 
 Scenario('edit user', I => {
-  I.click({xpath: '//*[@id="root"]/div/div/div/div/table/tbody/tr[3]/td[3]'});
+  I.click({xpath: '(.//*[normalize-space(text()) and normalize-space(.)="User 2"])[1]/following::i[1]'});
   I.fillField('name','edit user');
   I.click('Save changes', '.modal-footer');
   I.saveScreenshot('edituser.png');
@@ -19,8 +19,9 @@ Scenario('edit user', I => {
 });
 
 Scenario('edit user', I => {
-  I.click({xpath: '//*[@id="root"]/div/div/div/div/table/tbody/tr[2]/td[4]'});
+  I.click({xpath: '(.//*[normalize-space(text()) and normalize-space(.)="User 3"])[1]/following::i[2]'});
   I.saveScreenshot('deleteuser.png');
+  I.dontSee('User 3');
 });
 
 Scenario('add user', I => {
@@ -29,3 +30,5 @@ Scenario('add user', I => {
   I.click('Save changes', '.modal-footer');
   I.saveScreenshot('adduser.png');
 });
+
+// https://hub.docker.com/r/codeception/codeceptjs
